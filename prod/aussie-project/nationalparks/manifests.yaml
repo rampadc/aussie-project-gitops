@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    description: The application's http port.
+  labels:
+    application: nationalparks
+  name: nationalparks
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: nationalparks
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nationalparks
+spec:
+  selector:
+    matchLabels:
+      app: nationalparks
+  template:
+    metadata:
+      labels:
+        app: nationalparks
+    spec:
+      containers:
+      - env:
+        - name: MONGODB_SERVER_HOST
+          value: my-mongo-mongodb
+        image: image-registry.openshift-image-registry.svc:5000/aussie-project/nationalparks:ef736a875f5cf33b4581dbdd3e50df78ba2de56c
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /ws/healthz
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+        name: nationalparks
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /ws/healthz
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Route
+metadata:
+  annotations:
+    description: Route for application's http service.
+  labels:
+    application: nationalparks
+  name: nationalparks
+spec:
+  tls:
+    termination: edge
+  to:
+    kind: Service
+    name: nationalparks
