@@ -30,7 +30,7 @@ spec:
       - env:
         - name: MONGODB_SERVER_HOST
           value: my-mongo-mongodb
-        image: image-registry.openshift-image-registry.svc:5000/aussie-project/nationalparks:393d78f0bcfcad727db570c0b60e46e11ac44551
+        image: image-registry.openshift-image-registry.svc:5000/aussie-project/nationalparks:4dc6420f627358819dba2300b7696f1f1bb24c15
         livenessProbe:
           failureThreshold: 3
           httpGet:
@@ -55,7 +55,7 @@ spec:
             cpu: 500m
             memory: 512Mi
 ---
-apiVersion: v1
+apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   annotations:
