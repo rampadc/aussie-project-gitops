@@ -30,7 +30,7 @@ spec:
       - env:
         - name: MONGODB_SERVER_HOST
           value: my-mongo-mongodb
-        image: image-registry.openshift-image-registry.svc:5000/aussie-project/nationalparks:ef736a875f5cf33b4581dbdd3e50df78ba2de56c
+        image: image-registry.openshift-image-registry.svc:5000/aussie-project/nationalparks:393d78f0bcfcad727db570c0b60e46e11ac44551
         livenessProbe:
           failureThreshold: 3
           httpGet:
@@ -59,6 +59,7 @@ apiVersion: v1
 kind: Route
 metadata:
   annotations:
+    argocd.argoproj.io/sync-options: Validate=false
     description: Route for application's http service.
   labels:
     application: nationalparks
