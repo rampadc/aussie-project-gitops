@@ -63,6 +63,9 @@ metadata:
     description: Route for application's http service.
   labels:
     application: nationalparks
+    app: workshop
+    component: nationalparks
+    role: backend
   name: nationalparks
 spec:
   tls:
