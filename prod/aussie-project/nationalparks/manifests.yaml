@@ -66,6 +66,7 @@ metadata:
     app: workshop
     component: nationalparks
     role: backend
+    type: parksmap-backend
   name: nationalparks
 spec:
   tls:
