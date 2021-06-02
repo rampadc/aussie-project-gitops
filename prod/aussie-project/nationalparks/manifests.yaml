@@ -30,24 +30,24 @@ spec:
       - env:
         - name: MONGODB_SERVER_HOST
           value: my-mongo-mongodb
-        image: image-registry.openshift-image-registry.svc:5000/aussie-project/nationalparks:4dc6420f627358819dba2300b7696f1f1bb24c15
+        image: image-registry.openshift-image-registry.svc:5000/aussie-project/nationalparks:2a043b8e1a58cd578481d9d0f01e9f3c306c9487
         livenessProbe:
-          failureThreshold: 100
+          failureThreshold: 3
           httpGet:
             path: /ws/healthz
             port: 8080
-          initialDelaySeconds: 60
+          initialDelaySeconds: 3
           periodSeconds: 10
           successThreshold: 1
         name: nationalparks
         ports:
         - containerPort: 8080
         readinessProbe:
-          failureThreshold: 100
+          failureThreshold: 3
           httpGet:
             path: /ws/healthz
             port: 8080
-          initialDelaySeconds: 60
+          initialDelaySeconds: 3
           periodSeconds: 10
           successThreshold: 1
         resources:
@@ -63,9 +63,6 @@ metadata:
     description: Route for application's http service.
   labels:
     application: nationalparks
-    app: workshop
-    component: nationalparks
-    role: backend
     type: parksmap-backend
   name: nationalparks
 spec:
