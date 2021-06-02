@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    description: The application's http port.
+  labels:
+    application: parksmap-web
+  name: parksmap-web
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: parksmap-web
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: parksmap-web
+spec:
+  selector:
+    matchLabels:
+      app: parksmap-web
+  template:
+    metadata:
+      labels:
+        app: parksmap-web
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/aussie-project/parksmap-web:8b53733b58f4c978c7f15063fba91d4193952fb0
+        livenessProbe:
+          failureThreshold: 100
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+        name: parksmap-web
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          failureThreshold: 100
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: Validate=false
+    description: Route for application's http service.
+  labels:
+    app: workshop
+    app.kubernetes.io/name: spring
+    application: parksmap-web
+    component: parksmap-web
+    role: frontend
+  name: parksmap-web
+spec:
+  tls:
+    termination: edge
+  to:
+    kind: Service
+    name: parksmap-web
