@@ -32,22 +32,22 @@ spec:
           value: my-mongo-mongodb
         image: image-registry.openshift-image-registry.svc:5000/aussie-project/nationalparks:4dc6420f627358819dba2300b7696f1f1bb24c15
         livenessProbe:
-          failureThreshold: 3
+          failureThreshold: 100
           httpGet:
             path: /ws/healthz
             port: 8080
-          initialDelaySeconds: 3
+          initialDelaySeconds: 60
           periodSeconds: 10
           successThreshold: 1
         name: nationalparks
         ports:
         - containerPort: 8080
         readinessProbe:
-          failureThreshold: 3
+          failureThreshold: 100
           httpGet:
             path: /ws/healthz
             port: 8080
-          initialDelaySeconds: 3
+          initialDelaySeconds: 60
           periodSeconds: 10
           successThreshold: 1
         resources:
